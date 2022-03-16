@@ -28,15 +28,13 @@ enum Age {
 // - miles (u32)
 // Return tuple with car age ("New" or "Used") and mileage
 fn car_quality(miles: u32) -> (Age, u32) {
+    // Corrected code: Check if car has accumulated miles
+    // Corrected code: Return tuple early for Used car
     if miles > 0 {
-        (Age::Used, miles)
-    } else {
-        (Age::New, 0)
+        return (Age::Used, miles);
     }
-
-    // todo!("Add conditional expression: If car has accumulated miles, return tuple for Used car with current mileage");
-
-    // todo!("Return tuple for New car with zero miles");
+    // Corrected code: Return tuple for New car, no need for "return" keyword or semicolon
+    (Age::New, miles)
 }
 
 //////////////////////////////////////////////////
@@ -50,15 +48,34 @@ fn car_quality(miles: u32) -> (Age, u32) {
 // Return an instance of a "Car" struct with the arrow `->` syntax
 fn car_factory(color: String, motor: Transmission, roof: bool, miles: u32) -> Car {
     // Show details about car order
-    // - Check if order is for Used or New car, then check the roof type
-    // - Print details for New or Used car based on roof type
-    todo!("Add conditional expression: If car is Used age, then check roof type");
-    todo!("Add conditional expression: If roof is a hard top, print details");
+    // Corrected code: If order is for Used car, check roof type, print details
+    // Corrected code: Else, order is for New car, check roof tye, print details
     // Call the `println!` macro to show the car order details
-    println!(
-        "Prepare a used car: {:?}, {}, Hard top, {} miles\n",
-        motor, color, miles
-    );
+    if car_quality(miles).0 == Age::Used {
+        if roof {
+            println!(
+                "Preparing a used car: {:?}, {}, Hard top, {} miles",
+                motor, color, miles
+            );
+        } else {
+            println!(
+                "Preparing a used car: {:?}, {}, Convertible, {} miles",
+                motor, color, miles
+            );
+        }
+    } else {
+        if roof {
+            println!(
+                "Building a new car: {:?}, {}, Hard top, {} miles",
+                motor, color, miles
+            );
+        } else {
+            println!(
+                "Building a new car: {:?}, {}, Convertible, {} miles",
+                motor, color, miles
+            );
+        }
+    }
 
     // Create a new "Car" instance as requested
     // - Bind first three fields to values of input arguments
@@ -71,10 +88,11 @@ fn car_factory(color: String, motor: Transmission, roof: bool, miles: u32) -> Ca
     }
 }
 
+//////////////////////////////////////////////////
+
 fn main() {
     // Car order #1: New, Manual, Hard top
     car_factory(String::from("Orange"), Transmission::Manual, true, 0);
-
     // Car order #2: Used, Semi-automatic, Convertible
     car_factory(String::from("Red"), Transmission::SemiAuto, false, 565);
 
